@@ -1,6 +1,6 @@
 # Arcanoid canvas game
 
-The game devekopment started with vanilla js as a pet project.
+The game development started with vanilla js as a pet project.
 Next, it is planned to switch to Vue.
 
 

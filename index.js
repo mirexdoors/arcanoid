@@ -33,8 +33,16 @@ const drawBall = () => {
 }
 
 const calcDeltas = () => {
-    if (y + dy < ballRadius || y + dy > canvas.height - ballRadius) {
+    if (y + dy < ballRadius) {
         dy = -dy;
+    } else if (y + dy > canvas.height - ballRadius) {
+        if (x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+        } else {
+            alert("GAME OVER");
+            document.location.reload();
+            clearInterval(interval); // Needed for Chrome to end game
+        }
     }
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -87,4 +95,4 @@ const keyUpHandler = (e) => {
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-setInterval(draw, 10);
+const interval = setInterval(draw, 10);
