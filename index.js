@@ -32,6 +32,15 @@ let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
 
+let score = 0;
+
+const drawScore = () => {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: " + score, 8, 20);
+};
+
+
 const collisionDetection = () => {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
@@ -41,6 +50,13 @@ const collisionDetection = () => {
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
                     b.status = false;
+                    score++;
+
+                    if(score === brickRowCount*brickColumnCount) {
+                        alert("YOU WIN, CONGRATULATIONS!");
+                        document.location.reload();
+                        clearInterval(interval); // Needed for Chrome to end game
+                    }
                 }
             }
         }
@@ -124,6 +140,7 @@ const draw = () => {
     drawBricks();
     drawBall();
     collisionDetection();
+    drawScore();
     calcDeltas();
 }
 
