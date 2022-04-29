@@ -1,9 +1,9 @@
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
-const brickRowCount = 3;
+const brickRowCount = 5;
 const brickColumnCount = 10;
-const brickWidth = 75;
+const brickWidth = 81;
 const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
@@ -18,12 +18,7 @@ for (let c = 0; c < brickColumnCount; c++) {
 }
 
 const ballRadius = 25;
-// initial position
-let x = canvas.width / 2;
-let y = canvas.height - 30;
 
-let dx = 2;
-let dy = -2;
 
 const paddleHeight = 20;
 const paddleWidth = 150;
@@ -33,6 +28,14 @@ let rightPressed = false;
 let leftPressed = false;
 let lives = 3;
 let score = 0;
+
+
+// initial position
+let x = canvas.width / 2;
+let y = canvas.height - paddleHeight - ballRadius;
+let dx = 2;
+let dy = -2;
+
 
 const drawLives = () => {
     ctx.font = "16px Arial";
@@ -103,9 +106,9 @@ const drawBall = () => {
 }
 
 const calcDeltas = () => {
-    if (y + dy < ballRadius) {
+    if (y + dy < ballRadius + paddleHeight) {
         dy = -dy;
-    } else if (y + dy > canvas.height - ballRadius) {
+    } else if (y + dy > canvas.height - ballRadius - paddleHeight + 5) {
         if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
         } else {
