@@ -52,7 +52,7 @@ const collisionDetection = () => {
                     b.status = false;
                     score++;
 
-                    if(score === brickRowCount*brickColumnCount) {
+                    if (score === brickRowCount * brickColumnCount) {
                         alert("YOU WIN, CONGRATULATIONS!");
                         document.location.reload();
                         clearInterval(interval); // Needed for Chrome to end game
@@ -144,6 +144,14 @@ const draw = () => {
     calcDeltas();
 }
 
+
+const mouseMoveHandler = (e) => {
+    const relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth/2;
+    }
+}
+
 const keyDownHandler = (e) => {
     if (e.key === "Right" || e.key === "ArrowRight") {
         rightPressed = true;
@@ -160,6 +168,7 @@ const keyUpHandler = (e) => {
     }
 }
 
+document.addEventListener("mousemove", mouseMoveHandler, false);
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
