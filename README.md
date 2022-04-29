@@ -5,7 +5,7 @@ Next, it is planned to switch to Vue.
 
 
 ## TODO List
- - Finish functionality on vanilla
+ - Fix bug with second live starting!!!
  - Refactor to Vue
  - Mobile version
  - Score implementation on frontend
