@@ -31,8 +31,14 @@ let paddleX = (canvas.width - paddleWidth) / 2;
 
 let rightPressed = false;
 let leftPressed = false;
-
+let lives = 3;
 let score = 0;
+
+const drawLives = () => {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+}
 
 const drawScore = () => {
     ctx.font = "16px Arial";
@@ -55,7 +61,6 @@ const collisionDetection = () => {
                     if (score === brickRowCount * brickColumnCount) {
                         alert("YOU WIN, CONGRATULATIONS!");
                         document.location.reload();
-                        clearInterval(interval); // Needed for Chrome to end game
                     }
                 }
             }
@@ -104,9 +109,17 @@ const calcDeltas = () => {
         if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
         } else {
-            alert("GAME OVER");
-            document.location.reload();
-            clearInterval(interval); // Needed for Chrome to end game
+            lives--;
+            if (!lives) {
+                alert("GAME OVER");
+                document.location.reload();
+            } else {
+                x = canvas.width / 2;
+                y = canvas.height - 30;
+                dx = 2;
+                dy = -2;
+                paddleX = (canvas.width - paddleWidth) / 2;
+            }
         }
     }
 
@@ -141,14 +154,16 @@ const draw = () => {
     drawBall();
     collisionDetection();
     drawScore();
+    drawLives();
     calcDeltas();
+    requestAnimationFrame(draw);
 }
 
 
 const mouseMoveHandler = (e) => {
     const relativeX = e.clientX - canvas.offsetLeft;
-    if(relativeX > 0 && relativeX < canvas.width) {
-        paddleX = relativeX - paddleWidth/2;
+    if (relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth / 2;
     }
 }
 
@@ -172,4 +187,5 @@ document.addEventListener("mousemove", mouseMoveHandler, false);
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-const interval = setInterval(draw, 10);
+draw();
+
