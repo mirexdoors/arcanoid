@@ -5,7 +5,7 @@ Next, it is planned to switch to Vue.
 
 
 ## TODO List
- - Fix bug with second live starting!!!
+ - auth implementation on Nest
  - Refactor to Vue
  - Mobile version
  - Score implementation on frontend

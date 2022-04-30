@@ -19,23 +19,32 @@ for (let c = 0; c < brickColumnCount; c++) {
 
 const ballRadius = 25;
 
-
 const paddleHeight = 20;
 const paddleWidth = 150;
-let paddleX = (canvas.width - paddleWidth) / 2;
+
+let paddleX = 0;
 
 let rightPressed = false;
 let leftPressed = false;
 let lives = 3;
 let score = 0;
 
+let x = 0;
+let y = 0;
 
-// initial position
-let x = canvas.width / 2;
-let y = canvas.height - paddleHeight - ballRadius;
-let dx = 2;
-let dy = -2;
+let dx = 0;
+let dy = 0;
 
+const setInitialPosition = () => {
+    // initial position
+    x = canvas.width / 2;
+    y = canvas.height - paddleHeight - ballRadius;
+
+    dx = 2;
+    dy = -2;
+
+    paddleX = (canvas.width - paddleWidth) / 2;
+}
 
 const drawLives = () => {
     ctx.font = "16px Arial";
@@ -117,10 +126,7 @@ const calcDeltas = () => {
                 alert("GAME OVER");
                 document.location.reload();
             } else {
-                x = canvas.width / 2;
-                y = canvas.height - 30;
-                dx = 2;
-                dy = -2;
+                setInitialPosition();
                 paddleX = (canvas.width - paddleWidth) / 2;
             }
         }
@@ -185,6 +191,8 @@ const keyUpHandler = (e) => {
         leftPressed = false;
     }
 }
+
+setInitialPosition();
 
 document.addEventListener("mousemove", mouseMoveHandler, false);
 document.addEventListener("keydown", keyDownHandler, false);
