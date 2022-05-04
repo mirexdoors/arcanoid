@@ -5,8 +5,6 @@ import {AuthModule} from './auth/auth.module';
 import {UsersModule} from './users/users.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Connection} from 'typeorm';
-import {User} from "./users/user.entity";
-
 
 @Module({
     imports: [
