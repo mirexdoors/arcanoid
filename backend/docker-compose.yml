@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:12-alpine
+    ports: [ "127.0.0.1:15433:5432" ]
+    environment:
+    - POSTGRES_DB=arcanoid
+    - POSTGRES_USER=arcanoid
+    - POSTGRES_PASSWORD=K8XM6cekwuk9563S
+    volumes:
+        - "./var/sql-data:/var/lib/postgresql/data"
+    restart: always
