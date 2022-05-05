@@ -7,7 +7,7 @@
     "username": "arcanoid",
     "password": "K8XM6cekwuk9563S",
     "database": "arcanoid",
-    "entities": ["src/**/*.entity{ .ts,.js}"],
+    "entities": ["dist/**/*.entity{ .ts,.js}"],
     "synchronize": true,
     "migrations": ["dist/migrations/*{.ts,.js}"],
     "migrationsRun": true
