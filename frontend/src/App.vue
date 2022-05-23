@@ -1,13 +1,29 @@
 <template>
-   <canvas id="myCanvas" width="960" height="640"></canvas>
+  <div>
+    <ArcAuth v-if="isLogged"/>
+    <canvas
+      v-if="false"
+      id="myCanvas"
+      width="960"
+      height="640"
+    >
+      <ArcPaddle/>
+      <ArcBall/>
+    </canvas>
+  </div>
+
 </template>
 
-<script lang="js">
+<script lang="ts">
 import { defineComponent } from 'vue';
+import ArcPaddle from '@/components/ArcPaddle.vue';
+import ArcBall from '@/components/ArcBall.vue';
+import ArcAuth from '@/components/ArcAuth.vue';
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'App',
-  components: {},
+  components: { ArcAuth, ArcPaddle, ArcBall },
   mounted() {
     const canvas = document.getElementById('myCanvas');
     const ctx = canvas.getContext('2d');
@@ -21,11 +37,9 @@ export default defineComponent({
     const brickOffsetLeft = 30;
 
     const bricks = [];
-    // eslint-disable-next-line no-plusplus
-    for (let c = 0; c < brickColumnCount; c++) {
+    for (let c = 0; c < brickColumnCount; c += 1) {
       bricks[c] = [];
-      // eslint-disable-next-line no-plusplus
-      for (let r = 0; r < brickRowCount; r++) {
+      for (let r = 0; r < brickRowCount; r += 1) {
         bricks[c][r] = { x: 0, y: 0, status: true };
       }
     }
@@ -72,18 +86,16 @@ export default defineComponent({
     };
 
     const collisionDetection = () => {
-      // eslint-disable-next-line no-plusplus
-      for (let c = 0; c < brickColumnCount; c++) {
-        // eslint-disable-next-line no-plusplus
-        for (let r = 0; r < brickRowCount; r++) {
+      for (let c = 0; c < brickColumnCount; c += 1) {
+        for (let r = 0; r < brickRowCount; r += 1) {
           const b = bricks[c][r];
 
           if (b.status) {
             if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
               dy = -dy;
               b.status = false;
-              // eslint-disable-next-line no-plusplus
-              score++;
+
+              score += 1;
 
               if (score === brickRowCount * brickColumnCount) {
                 // eslint-disable-next-line no-alert
@@ -97,10 +109,8 @@ export default defineComponent({
     };
 
     const drawBricks = () => {
-      // eslint-disable-next-line no-plusplus
-      for (let c = 0; c < brickColumnCount; c++) {
-        // eslint-disable-next-line no-plusplus
-        for (let r = 0; r < brickRowCount; r++) {
+      for (let c = 0; c < brickColumnCount; c += 1) {
+        for (let r = 0; r < brickRowCount; r += 1) {
           if (bricks[c][r].status) {
             const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
             const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
@@ -139,8 +149,7 @@ export default defineComponent({
         if (x > paddleX && x < paddleX + paddleWidth) {
           dy = -dy;
         } else {
-          // eslint-disable-next-line no-plusplus
-          lives--;
+          lives -= 1;
           if (!lives) {
             alert('GAME OVER');
             document.location.reload();
@@ -218,6 +227,11 @@ export default defineComponent({
 
     draw();
   },
+  computed: {
+    ...mapGetters('Auth', {
+      isLogged: 'isLogged',
+    }),
+  },
 });
 </script>
 
@@ -232,6 +246,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 canvas {
   background: #eee;
   display: block;
@@ -239,11 +254,7 @@ canvas {
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
