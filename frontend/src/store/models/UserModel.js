@@ -1,2 +1,2 @@
 export {};
-//# sourceMappingURL=UserModel.js.map
+// # sourceMappingURL=UserModel.js.map

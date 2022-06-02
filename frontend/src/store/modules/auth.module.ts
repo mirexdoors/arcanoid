@@ -2,7 +2,7 @@ import { GET_ME, LOGIN, LOGOUT } from '@/store/action.types';
 import { SET_AUTH, SET_USER } from '@/store/mutation.types';
 import User from '@/store/models/UserModel';
 
-export default {
+export default{
   namespaced: true,
   state: {
     user: {
@@ -20,18 +20,18 @@ export default {
   },
 
   mutations: {
-    [SET_AUTH](state, payload: boolean) {
-      state.isLoggedIn = payload;
+    [SET_AUTH](state: { isLogged: boolean; }, payload: boolean) {
+      state.isLogged = payload;
     },
-    [SET_USER](state, payload: User) {
+    [SET_USER](state: { user: User; }, payload: User) {
       state.user = payload;
     },
   },
   getters: {
-    isLogged(state): boolean {
+    isLogged(state: { isLogged: boolean; }): boolean {
       return state.isLogged;
     },
-    getUser(state): User {
+    getUser(state: { user: User; }): User {
       return state.user;
     },
   },

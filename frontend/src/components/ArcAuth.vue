@@ -1,13 +1,15 @@
 <template>
+  Авторизация
   <ArcInput />
   <ArcInput />
 </template>
 
-<script>
+<script lang="ts">
 import ArcInput from '@/components/common/ArcInput.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'ArcAuth',
   components: { ArcInput },
-};
+});
 </script>

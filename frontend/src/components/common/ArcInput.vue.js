@@ -1,4 +1,4 @@
 export default {
-    name: 'ArcInput',
+  name: 'ArcInput',
 };
-//# sourceMappingURL=ArcInput.vue.js.map
+// # sourceMappingURL=ArcInput.vue.js.map
