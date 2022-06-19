@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <ArcAuth v-if="isLogged"/>
+  <div class="app">
+    <ArcAuth
+      v-if="!isLogged"
+      class="app__auth"
+    />
     <canvas
       v-if="false"
       id="myCanvas"
@@ -15,23 +18,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, computed } from 'vue';
 import ArcPaddle from '@/components/ArcPaddle.vue';
 import ArcBall from '@/components/ArcBall.vue';
 import ArcAuth from '@/components/ArcAuth.vue';
-import { mapGetters } from 'vuex';
+import store from '@/store'
 
 export default defineComponent({
   name: 'App',
   components: { ArcAuth, ArcPaddle, ArcBall },
   setup () {
+    const isLogged = computed(() => store.getters['Auth/isLogged'])?.value;
     const canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
+
+    const ctx = canvas?.getContext('2d');
 
     const showError = () => {
-      throw new Error('2d context not supported or canvas already initialized')
+      throw new Error('2d context not supported or canvas already initialized');
     };
-    if (!ctx) {
+    if (isLogged && !ctx) {
       onMounted(showError);
     } else {
       const brickRowCount = 5;
@@ -42,7 +47,7 @@ export default defineComponent({
       const brickOffsetTop = 30;
       const brickOffsetLeft = 30;
 
-      const bricks: any[][] = [];
+      const bricks: { x: number; y: number; status: boolean }[][] = [];
 
       const countedBlocks = Array.from(Array(brickColumnCount).keys());
 
@@ -82,15 +87,19 @@ export default defineComponent({
         paddleX = (canvas.width - paddleWidth) / 2;
       };
       const drawLives = () => {
-        ctx.font = '16px Arial';
-        ctx.fillStyle = '#0095DD';
-        ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
+        if (ctx) {
+          ctx.font = '16px Arial';
+          ctx.fillStyle = '#0095DD';
+          ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
+        }
       };
 
       const drawScore = () => {
-        ctx.font = '16px Arial';
-        ctx.fillStyle = '#0095DD';
-        ctx.fillText(`Score: ${score}`, 8, 20);
+        if (ctx) {
+          ctx.font = '16px Arial';
+          ctx.fillStyle = '#0095DD';
+          ctx.fillText(`Score: ${score}`, 8, 20);
+        }
       };
 
       const collisionDetection = () => {
@@ -117,37 +126,43 @@ export default defineComponent({
       };
 
       const drawBricks = () => {
-        for (let c = 0; c < brickColumnCount; c += 1) {
-          for (let r = 0; r < brickRowCount; r += 1) {
-            if (bricks[c][r].status) {
-              const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-              const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
-              bricks[c][r].x = brickX;
-              bricks[c][r].y = brickY;
-              ctx.beginPath();
-              ctx.rect(brickX, brickY, brickWidth, brickHeight);
-              ctx.fillStyle = '#0095DD';
-              ctx.fill();
-              ctx.closePath();
+        if (ctx) {
+          for (let c = 0; c < brickColumnCount; c += 1) {
+            for (let r = 0; r < brickRowCount; r += 1) {
+              if (bricks[c][r].status) {
+                const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = '#0095DD';
+                ctx.fill();
+                ctx.closePath();
+              }
             }
           }
         }
       };
 
       const drawPaddle = () => {
-        ctx.beginPath();
-        ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = '#053455';
-        ctx.fill();
-        ctx.closePath();
+        if (ctx) {
+          ctx.beginPath();
+          ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+          ctx.fillStyle = '#053455';
+          ctx.fill();
+          ctx.closePath();
+        }
       };
 
       const drawBall = () => {
-        ctx.beginPath();
-        ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-        ctx.fillStyle = '#0095DD';
-        ctx.fill();
-        ctx.closePath();
+        if (ctx) {
+          ctx.beginPath();
+          ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+          ctx.fillStyle = '#0095DD';
+          ctx.fill();
+          ctx.closePath();
+        }
       };
 
       const calcDeltas = () => {
@@ -192,16 +207,18 @@ export default defineComponent({
 
       const draw = () => {
         // clear canvas on each frame
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        calcPaddle();
-        drawPaddle();
-        drawBricks();
-        drawBall();
-        collisionDetection();
-        drawScore();
-        drawLives();
-        calcDeltas();
-        requestAnimationFrame(draw);
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          calcPaddle();
+          drawPaddle();
+          drawBricks();
+          drawBall();
+          collisionDetection();
+          drawScore();
+          drawLives();
+          calcDeltas();
+          requestAnimationFrame(draw);
+        }
       };
 
       const mouseMoveHandler = (e: { clientX: number; }) => {
@@ -227,20 +244,17 @@ export default defineComponent({
         }
       };
 
-      setInitialPosition()
+      if (canvas) {
+        setInitialPosition()
+        document.addEventListener('mousemove', mouseMoveHandler, false)
+        document.addEventListener('keydown', keyDownHandler, false)
+        document.addEventListener('keyup', keyUpHandler, false)
 
-      document.addEventListener('mousemove', mouseMoveHandler, false)
-      document.addEventListener('keydown', keyDownHandler, false)
-      document.addEventListener('keyup', keyUpHandler, false)
+        onMounted(draw)
+      }
 
-      onMounted(draw)
+      return { isLogged }
     }
-  },
-
-  computed: {
-    ...mapGetters('Auth', {
-      isLogged: 'isLogged'
-    })
   }
 })
 </script>
@@ -251,20 +265,18 @@ export default defineComponent({
   margin: 0;
 }
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 canvas {
   background: #eee;
   display: block;
-  margin: 0 auto;
 }
 
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 </style>

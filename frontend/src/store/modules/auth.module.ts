@@ -2,14 +2,14 @@ import { GET_ME, LOGIN, LOGOUT } from '@/store/action.types';
 import { SET_AUTH, SET_USER } from '@/store/mutation.types';
 import User from '@/store/models/UserModel';
 
-export default{
+export default {
   namespaced: true,
   state: {
     user: {
       id: 0,
-      login: '',
+      login: ''
     } as User,
-    isLogged: false,
+    isLogged: false
   },
   actions: {
     /* async [LOGIN]() {},
@@ -20,19 +20,19 @@ export default{
   },
 
   mutations: {
-    [SET_AUTH](state: { isLogged: boolean; }, payload: boolean) {
+    [SET_AUTH] (state: { isLogged: boolean; }, payload: boolean) {
       state.isLogged = payload;
     },
-    [SET_USER](state: { user: User; }, payload: User) {
+    [SET_USER] (state: { user: User; }, payload: User) {
       state.user = payload;
-    },
+    }
   },
   getters: {
-    isLogged(state: { isLogged: boolean; }): boolean {
+    isLogged (state: { isLogged: boolean; }): boolean {
       return state.isLogged;
     },
-    getUser(state: { user: User; }): User {
+    getUser (state: { user: User; }): User {
       return state.user;
-    },
-  },
+    }
+  }
 };
