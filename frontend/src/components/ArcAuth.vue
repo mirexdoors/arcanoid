@@ -20,12 +20,16 @@ import ArcInput from '@/components/common/ArcInput.vue';
 import { defineComponent } from 'vue';
 import ArcTitle from '@/components/common/ArcTitle.vue';
 import ArcButton from '@/components/common/ArcButton.vue';
+import store from '@/store';
+import { LOGIN } from '@/store/action.types';
 
 export default defineComponent({
   name: 'ArcAuth',
   components: { ArcInput, ArcTitle, ArcButton },
   setup () {
-    const handleSubmit = () => alert('submit');
+    const handleSubmit = () => {
+      store.dispatch(`Auth/${LOGIN}`)
+    };
     return { handleSubmit }
   }
 });

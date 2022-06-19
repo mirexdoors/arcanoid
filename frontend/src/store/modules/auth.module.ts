@@ -12,8 +12,11 @@ export default {
     isLogged: false
   },
   actions: {
-    /* async [LOGIN]() {},
+    async [LOGIN] () {
+      console.log('login');
+    }
 
+    /*
     async [GET_ME]() {},
 
     [LOGOUT]() {} */
