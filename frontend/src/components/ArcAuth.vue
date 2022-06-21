@@ -20,7 +20,7 @@ import ArcInput from '@/components/common/ArcInput.vue';
 import { defineComponent } from 'vue';
 import ArcTitle from '@/components/common/ArcTitle.vue';
 import ArcButton from '@/components/common/ArcButton.vue';
-import store from '@/store';
+import { useStore } from '@/store';
 import { LOGIN } from '@/store/action.types';
 
 export default defineComponent({
@@ -28,6 +28,7 @@ export default defineComponent({
   components: { ArcInput, ArcTitle, ArcButton },
   setup () {
     const handleSubmit = () => {
+      const store = useStore();
       store.dispatch(`Auth/${LOGIN}`)
     };
     return { handleSubmit }

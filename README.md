@@ -5,8 +5,8 @@ Next, it is planned to switch to Vue.
 
 
 ## TODO List
- - create notifier plugin
- - auth (login/register) implementation on frontend
+ - login implementation on frontend
+ - register implementation on frontend
  - auth implementation on Nest
  - Mobile version
  - Score implementation on frontend
