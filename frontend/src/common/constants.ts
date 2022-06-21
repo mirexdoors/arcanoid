@@ -1,3 +1,3 @@
 export const resourceTypes = {
-  AUTH: "auth",
+  AUTH: 'auth'
 };

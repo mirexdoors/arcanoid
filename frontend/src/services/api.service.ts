@@ -54,10 +54,6 @@ export class CrudApiService extends ReadOnlyApiService {
 }
 
 export class AuthApiService extends BaseApiService {
-  constructor () {
-    super();
-  }
-
   setAuthHeader () {
     const token = JwtService.getToken();
     axiosInstance.defaults.headers.common.Authorization = token
