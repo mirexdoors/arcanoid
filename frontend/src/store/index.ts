@@ -1,11 +1,10 @@
-import {InjectionKey} from 'vue'
-import {createStore, Store, useStore as baseUseStore} from 'vuex'
+import { InjectionKey } from 'vue'
+import { createStore, Store, useStore as baseUseStore } from 'vuex'
 import User from '@/store/models/UserModel';
-import {GET_ME, LOGIN} from '@/store/action.types';
-import {SET_AUTH, SET_USER} from '@/store/mutation.types';
-import JwtService from "@/services/jwt.service";
-import {createResources} from "@/common/helpers";
-
+import { GET_ME, LOGIN } from '@/store/action.types';
+import { SET_AUTH, SET_USER } from '@/store/mutation.types';
+import JwtService from '@/services/jwt.service';
+import { createResources } from '@/common/helpers';
 
 const $jwt = JwtService;
 const $api = createResources();
@@ -23,14 +22,14 @@ export const store = createStore<State>({
     user: {
       id: 0,
       login: ''
-    },
+    }
   },
   actions: {
-    async [LOGIN]() {
+    async [LOGIN] () {
       console.log('login');
     },
 
-    async [GET_ME]({commit}) {
+    async [GET_ME] ({ commit }) {
       try {
         const userData = await $api.auth.getMe();
         commit(SET_AUTH, true);
@@ -38,14 +37,14 @@ export const store = createStore<State>({
       } catch (e) {
         $jwt.destroyToken();
       }
-    },
+    }
 
     /*
     [LOGOUT]() {} */
-  },
+  }
 });
 
 // define your own `useStore` composition function
-export function useStore() {
+export function useStore () {
   return baseUseStore(key);
 }
