@@ -9,7 +9,7 @@
 
     <ArcInput placeholder="Логин" />
     <ArcInput type="password" placeholder="Пароль" />
-    <ArcButton>
+    <ArcButton type="submit">
       Войти
     </ArcButton>
   </form>
@@ -21,16 +21,19 @@ import { defineComponent } from 'vue';
 import ArcTitle from '@/components/common/ArcTitle.vue';
 import ArcButton from '@/components/common/ArcButton.vue';
 import { useStore } from '@/store';
-import { LOGIN } from '@/store/action.types';
+import { ActionTypes } from '@/store/action.types';
 
 export default defineComponent({
   name: 'ArcAuth',
   components: { ArcInput, ArcTitle, ArcButton },
   setup () {
+    const store = useStore();
+
     const handleSubmit = () => {
-      const store = useStore();
-      store.dispatch(`Auth/${LOGIN}`)
+      const credentials = {};
+      store.dispatch(ActionTypes.LOGIN, credentials);
     };
+
     return { handleSubmit }
   }
 });

@@ -1,5 +1,6 @@
 <template>
   <button
+    :type="type"
     class="arc-button"
     @click="$emit('click')"
   >
@@ -11,7 +12,13 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'ArcButton'
+  name: 'ArcButton',
+  props: {
+    type: {
+      type: String,
+      default: 'button'
+    }
+  }
 });
 </script>
 

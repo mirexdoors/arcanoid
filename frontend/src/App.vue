@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <ArcAuth
-        v-if="isLogged"
+        v-if="!isLogged"
         class="app__auth"
     />
     <ArcCanvas v-else/>
@@ -14,14 +14,14 @@ import { computed, defineComponent, onMounted } from 'vue';
 import ArcAuth from '@/components/ArcAuth.vue';
 import { useStore } from '@/store';
 import ArcCanvas from '@/components/ArcCanvas.vue';
-import { GET_ME } from '@/store/action.types';
+import { ActionTypes } from '@/store/action.types';
 
 export default defineComponent({
   name: 'App',
   components: { ArcCanvas, ArcAuth },
   setup () {
     const store = useStore();
-    const init = () => store.dispatch(GET_ME);
+    const init = () => store.dispatch(ActionTypes.GET_ME);
     onMounted(init);
     return { isLogged: computed(() => store.state.isLogged) }
   }

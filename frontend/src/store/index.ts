@@ -1,7 +1,7 @@
 import { InjectionKey } from 'vue'
 import { createStore, Store, useStore as baseUseStore } from 'vuex'
 import IUser from '@/store/models/UserModel';
-import { GET_ME, LOGIN } from '@/store/action.types';
+import { ActionTypes } from '@/store/action.types';
 import { SET_AUTH, SET_USER } from '@/store/mutation.types';
 import JwtService from '@/services/jwt.service';
 import { createResources } from '@/common/helpers';
@@ -27,14 +27,14 @@ export const store = createStore<State>({
     }
   },
   actions: {
-    async [LOGIN] ({ dispatch }, credentials: ICredentials) {
+    async [ActionTypes.LOGIN] ({ dispatch }, credentials: ICredentials) {
       try {
         const loginData = await $api.auth.login(credentials);
 
         if (loginData?.token) {
           $jwt.saveToken(loginData.token);
           $api.auth.setAuthHeader();
-          dispatch(GET_ME);
+          dispatch(ActionTypes.GET_ME);
         } else {
           console.error('Токен не получен');
         }
@@ -43,7 +43,7 @@ export const store = createStore<State>({
       }
     },
 
-    async [GET_ME] ({ commit }) {
+    async [ActionTypes.GET_ME] ({ commit }) {
       try {
         const userData = await $api.auth.getMe();
         commit(SET_AUTH, true);
@@ -51,14 +51,25 @@ export const store = createStore<State>({
       } catch (e) {
         $jwt.destroyToken();
       }
-    }
+    },
 
-    /*
-    [LOGOUT]() {} */
+    [ActionTypes.LOGOUT] ({ commit }) {
+      $api.auth.logout().then(() => {
+        $jwt.destroyToken();
+        $api.auth.setAuthHeader();
+        commit(SET_AUTH, false);
+        commit(SET_USER, {});
+      });
+    }
   },
 
   mutations: {
-
+    [SET_AUTH] (state: State, payload: boolean) {
+      state.isLogged = payload;
+    },
+    [SET_USER] (state: State, payload: IUser) {
+      state.user = payload;
+    }
   }
 });
 
