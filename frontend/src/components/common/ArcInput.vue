@@ -1,7 +1,9 @@
 <template>
   <input
+    :value="value"
     :type="type"
     class="arc-input"
+    @input="$emit('input', $event)"
   />
 </template>
 
@@ -11,6 +13,10 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'ArcInput',
   props: {
+    value: {
+      type: [String, Number],
+      required: true
+    },
     type: {
       type: String,
       default: 'text'
