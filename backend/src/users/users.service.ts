@@ -19,8 +19,8 @@ export class UsersService {
         return this.usersRepository.findOne(id);
     }
 
-    findOneByName(name: string): Promise<User | undefined> {
-        return this.usersRepository.findOne({where: {name}});
+    findOneByName(login: string): Promise<User | undefined> {
+        return this.usersRepository.findOne({where: {login}});
     }
 
     async remove(id: string): Promise<void> {
