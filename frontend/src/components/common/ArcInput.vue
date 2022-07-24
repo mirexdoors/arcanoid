@@ -12,6 +12,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ArcInput',
+  emits: ['input'],
   props: {
     value: {
       type: [String, Number],
